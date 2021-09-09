@@ -4,7 +4,7 @@ import java.io.*;
 public class Encoder 
 {
 	private HashMap dictionary = new HashMap<String,Integer>(256);
-	private ArrayList wordPieces = new ArrayList<String>();
+	private ArrayList entryArray = new ArrayList<String>();
 	private void initializeDictionary()
 	{
 		for(int i = 0; i<256; i++)
