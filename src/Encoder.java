@@ -12,10 +12,6 @@ public class Encoder
 			dictionary.put("" + (char)i,i);
 		}
 	}
-	private boolean inDictionary(String chars)
-	{
-		return (dictionary.containsKey(chars));
-	}
 	public String getText(String filename)
 	{
 		String code = "";
