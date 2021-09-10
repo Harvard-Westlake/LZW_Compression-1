@@ -3,16 +3,27 @@ import java.util.ArrayList;
 import java.io.*;
 public class Encoder 
 {
-	private static  HashMap dictionary = new HashMap<String,Integer>(256);
-	private static ArrayList entryValueArray = new ArrayList<Integer>();
-	private static void initializeDictionary()
+	private HashMap dictionary = new HashMap<String,Integer>(256);
+	private ArrayList entryValueArray = new ArrayList<Integer>();
+	private String fileName;
+	private String binaryMasterString;
+	private String text;
+	public Encoder(String uncompressedFile)
+	{
+		initializeDictionary();
+		fileName = uncompressedFile;
+		text = this.getText(uncompressedFile);
+		entryValueArray = this.toEntryArray(text);
+		binaryMasterString = this.createBinaryMasterString(entryValueArray);
+	}
+	private void initializeDictionary()
 	{
 		for(int i = 0; i<256; i++)
 		{
 			dictionary.put("" + (char)i,i);
 		}
 	}
-	public static String getText(String filename)
+	public String getText(String filename)
 	{
 		String code = "";
 		 try (BufferedReader br = new BufferedReader(new FileReader(filename)))
@@ -27,7 +38,7 @@ public class Encoder
 		 return code;
 	}
 	
-	 public static String toBinary(int x, int len)
+	 public String toBinary(int x, int len)
 	    {
 	        if (len > 0)
 	        {
@@ -37,7 +48,7 @@ public class Encoder
 	        return null;
 	    }
 	    
-	public static ArrayList<Integer> toEntryArray(String text)
+	public ArrayList<Integer> toEntryArray(String text)
 	{
 		ArrayList entryValueList = new ArrayList<Integer>();
 		String textForLoop = text;
@@ -68,7 +79,7 @@ public class Encoder
 	    return (int) (Math.log(x) / Math.log(2) + 1e-10);
 	}
 	
-	public static String getBinaryMasterString(ArrayList<Integer> entryValues)
+	public String createBinaryMasterString(ArrayList<Integer> entryValues)
 	{
 		String binaryRepresentation = "";
 		for(int i = 0; i < entryValues.size(); i++)
@@ -87,12 +98,25 @@ public class Encoder
 		return ((byte) Integer.parseInt(s, 2));
 	}
 	
+	public ArrayList<Integer> getEntryValueArray()
+	{
+		return entryValueArray;
+	}
+	
+	public String getBinaryMasterString()
+	{
+		return binaryMasterString;
+	}
+	
+	public String getText()
+	{
+		return text;
+	}
+	
 	public static void main(String [] args)
 	{
-		initializeDictionary();
-		String text = getText("lzw-file1.txt");
-		entryValueArray = toEntryArray(text);
-		String masterString = getBinaryMasterString(entryValueArray);
+		Encoder e = new Encoder("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/lzw-file1.txt");
+		String masterString = e.getBinaryMasterString();
 		byte[] byteRepresentation = new byte[masterString.length()/8];
 		int j = 0;
 		for(int i = 0; i < masterString.length() - 8; i += 8)
