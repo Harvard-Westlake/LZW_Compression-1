@@ -3,16 +3,16 @@ import java.util.ArrayList;
 import java.io.*;
 public class Encoder 
 {
-	private HashMap dictionary = new HashMap<String,Integer>(256);
-	private ArrayList entryValueArray = new ArrayList<Integer>();
-	private void initializeDictionary()
+	private static  HashMap dictionary = new HashMap<String,Integer>(256);
+	private static ArrayList entryValueArray = new ArrayList<Integer>();
+	private static void initializeDictionary()
 	{
 		for(int i = 0; i<256; i++)
 		{
 			dictionary.put("" + (char)i,i);
 		}
 	}
-	public String getText(String filename)
+	public static String getText(String filename)
 	{
 		String code = "";
 		 try (BufferedReader br = new BufferedReader(new FileReader(filename)))
@@ -37,7 +37,7 @@ public class Encoder
 	        return null;
 	    }
 	    
-	public ArrayList<Integer> toEntryArray(String text)
+	public static ArrayList<Integer> toEntryArray(String text)
 	{
 		ArrayList entryValueList = new ArrayList<Integer>();
 		String textForLoop = text;
@@ -68,7 +68,7 @@ public class Encoder
 	    return (int) (Math.log(x) / Math.log(2) + 1e-10);
 	}
 	
-	public String getBinaryMasterString(ArrayList<Integer> entryValues)
+	public static String getBinaryMasterString(ArrayList<Integer> entryValues)
 	{
 		String binaryRepresentation = "";
 		for(int i = 0; i < entryValues.size(); i++)
@@ -82,12 +82,12 @@ public class Encoder
 		return binaryRepresentation;
 	}
 	
-	public byte toByte(String s)
+	public static byte toByte(String s)
 	{
 		return ((byte) Integer.parseInt(s, 2));
 	}
 	
-	public void encode()
+	public static void main(String [] args)
 	{
 		initializeDictionary();
 		String text = getText("lzw-file1.txt");
