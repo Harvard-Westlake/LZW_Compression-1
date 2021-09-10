@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.io.*;
 public class Encoder 
 {
-	private HashMap dictionary = new HashMap<String,Integer>(256, 1);
+	public HashMap dictionary = new HashMap<String,Integer>(256, 1);
 	private ArrayList entryValueArray = new ArrayList<Integer>();
 	private String fileName;
 	private String binaryMasterString;
@@ -75,7 +75,7 @@ public class Encoder
 	
 	public static int log(int x) 
 	{
-	    return (int) (Math.log(x) / Math.log(2) + 1e-10);
+	    return (int)Math.ceil( (Math.log(x) / Math.log(2) + 1e-10));
 	}
 	
 	public String createBinaryMasterString(ArrayList<Integer> entryValues)
@@ -150,7 +150,7 @@ public class Encoder
 	
 	public static void main(String [] args)
 	{
-		Encoder e = new Encoder("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/lzw-file1.txt");
+		Encoder e = new Encoder("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/lzw-file3.txt");
 		String masterString = e.getBinaryMasterString();
 		byte[] dataAsBytes = e.toByteArray(masterString);
 		e.compress(dataAsBytes);
