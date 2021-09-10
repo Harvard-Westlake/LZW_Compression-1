@@ -75,7 +75,7 @@ public class Encoder
 	
 	public static int log(int x) 
 	{
-	    return (int)Math.ceil( (Math.log(x) / Math.log(2) + 1e-10));
+	    return (int)Math.ceil( (Math.log(x) / Math.log(2)));
 	}
 	
 	public String createBinaryMasterString(ArrayList<Integer> entryValues)
