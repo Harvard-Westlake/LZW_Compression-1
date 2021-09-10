@@ -61,7 +61,6 @@ public class Encoder
 		if(dictionary.containsKey(cn))
 		{
 			c = cn;
-			entryValueList.add(dictionary.get(cn));
 		}
 		else
 		{
@@ -86,7 +85,7 @@ public class Encoder
 		{
 			binaryRepresentation += toBinary(entryValues.get(i), Encoder.log(dictionary.size()));
 		}
-		while(binaryRepresentation.length()%8>0)
+		while(binaryRepresentation.length()%8!=0)
 		{
 			binaryRepresentation += "0";
 		}
@@ -96,6 +95,18 @@ public class Encoder
 	public byte toByte(String s)
 	{
 		return ((byte) Integer.parseInt(s, 2));
+	}
+	
+	public byte[] toByteArray(String masterString)
+	{
+		byte[] byteRepresentation = new byte[masterString.length()/8];
+		int j = 0;
+		for(int i = 0; i < masterString.length() - 8; i += 8)
+		{
+			byteRepresentation[j] = this.toByte(masterString.substring(i, i+8));
+			j++;
+		}
+		return byteRepresentation;
 	}
 	
 	public ArrayList<Integer> getEntryValueArray()
@@ -113,18 +124,36 @@ public class Encoder
 		return text;
 	}
 	
+	public void compress(byte[] bytes)
+	{
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/filename.dat");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			try {
+				out.write(bytes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    // Make sure to close the file when done
+		    try {
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
 	public static void main(String [] args)
 	{
-		Encoder e = new Encoder("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/lzw-file1.txt");
+		Encoder e = new Encoder("/Users/tylerdonovan/eclipse-workspace/LZW_Compression/src/lzw-file2.txt");
 		String masterString = e.getBinaryMasterString();
-		byte[] byteRepresentation = new byte[masterString.length()/8];
-		int j = 0;
-		for(int i = 0; i < masterString.length() - 8; i += 8)
-		{
-			byteRepresentation[j] = e.toByte(masterString.substring(i, i+8));
-			j++;
-		}
-		
+		byte[] dataAsBytes = e.toByteArray(masterString);
+		e.compress(dataAsBytes);
 	}
 	
 }
