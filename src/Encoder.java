@@ -4,7 +4,7 @@ import java.io.*;
 public class Encoder 
 {
 	private HashMap dictionary = new HashMap<String,Integer>(256);
-	private ArrayList entryArray = new ArrayList<String>();
+	private ArrayList entryValueArray = new ArrayList<Integer>();
 	private void initializeDictionary()
 	{
 		for(int i = 0; i<256; i++)
@@ -90,6 +90,16 @@ public class Encoder
 	public void encode()
 	{
 		initializeDictionary();
+		String text = getText("lzw-file1.txt");
+		entryValueArray = toEntryArray(text);
+		String masterString = getBinaryMasterString(entryValueArray);
+		byte[] byteRepresentation = new byte[masterString.length()/8];
+		int j = 0;
+		for(int i = 0; i < masterString.length() - 8; i += 8)
+		{
+			byteRepresentation[j] = toByte(masterString.substring(i, i+8));
+			j++;
+		}
 		
 	}
 	
