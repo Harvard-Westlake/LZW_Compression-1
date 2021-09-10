@@ -62,6 +62,31 @@ public class Encoder
 		}
 		return entryValueList;
 	}
+	
+	public static int log(int x) 
+	{
+	    return (int) (Math.log(x) / Math.log(2) + 1e-10);
+	}
+	
+	public String getBinaryMasterString(ArrayList<Integer> entryValues)
+	{
+		String binaryRepresentation = "";
+		for(int i = 0; i < entryValues.size(); i++)
+		{
+			binaryRepresentation += toBinary(entryValues.get(i), Encoder.log(dictionary.size()));
+		}
+		while(binaryRepresentation.length()%8>0)
+		{
+			binaryRepresentation += "0";
+		}
+		return binaryRepresentation;
+	}
+	
+	public byte toByte(String s)
+	{
+		return ((byte) Integer.parseInt(s, 2));
+	}
+	
 	public void encode()
 	{
 		initializeDictionary();
