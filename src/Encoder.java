@@ -93,7 +93,7 @@ public class Encoder
 		return binaryRepresentation;
 	}
 	
-	public static byte toByte(String s)
+	public byte toByte(String s)
 	{
 		return ((byte) Integer.parseInt(s, 2));
 	}
@@ -121,7 +121,7 @@ public class Encoder
 		int j = 0;
 		for(int i = 0; i < masterString.length() - 8; i += 8)
 		{
-			byteRepresentation[j] = toByte(masterString.substring(i, i+8));
+			byteRepresentation[j] = e.toByte(masterString.substring(i, i+8));
 			j++;
 		}
 		
